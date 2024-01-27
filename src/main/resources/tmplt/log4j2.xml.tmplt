@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="LOG_PATTERN">
+            [%d{yyyy-MM-dd HH:mm:ss.SSS}] %-8p [%-5t] %C{2}:%-12M - %m%n
+        </Property>
+    </Properties>
+    <Appenders>
+        <RollingFile 
+			name="RollingName" 
+			filename="logs/app.log"
+			filePattern="$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log">
+            <PatternLayout>
+                <Pattern>${LOG_PATTERN}</Pattern>
+            </PatternLayout>
+            <Policies>
+                <SizeBasedTriggeringPolicy size="20MB"/>
+            </Policies>
+        </RollingFile>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Logger name="com.example.adlisting.AdListingApplication" level="debug">
+            <AppenderRef ref="RollingName"/>
+        </Logger>
+        <Logger name="com.example.adlisting.controller.AdController" level="debug">
+            <AppenderRef ref="RollingName"/>
+        </Logger>
+
+        <Root level="error">
+            <AppenderRef ref="RollingName"/>
+        </Root>
+    </Loggers>
+</Configuration>
