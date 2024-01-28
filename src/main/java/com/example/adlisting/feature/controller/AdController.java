@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,16 +24,23 @@ public class AdController {
     this.websocketConnection = websocketConnection;
   }
 
-  @PreAuthorize("hasRole('USER')")
+  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   @GetMapping("/v1/tests")
   public List<TestEntity> getTests() {
     log.info("get all entities");
     return adService.getAllTestEntities();
   }
 
+  @PreAuthorize("hasAnyRole('ADMIN')")
+  @PutMapping("/v1/dummy_tests")
+  public void insertDummyTests() {
+    log.info("add dummy data");
+    adService.insertDummyTests();
+  }
+
   @GetMapping("/v1/test/{id}")
-  public TestEntity getTestById(@PathVariable long id) {
-    log.info("get bty id: " + id);
+  public TestEntity getTestById(@PathVariable String id) {
+    log.info("get by id: " + id);
     return adService.getTestEntityById(id);
   }
 }

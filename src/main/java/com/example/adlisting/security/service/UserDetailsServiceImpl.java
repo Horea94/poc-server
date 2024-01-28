@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService {
-
   private final UserRepository userRepository;
-
   private static final Logger log = LogManager.getLogger(UserDetailsServiceImpl.class);
 
   public UserDetailsServiceImpl(UserRepository userRepository) {
@@ -23,7 +21,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
     log.debug("Entering in loadUserByUsername Method...");
     UserInfo user = userRepository.findByUsername(username);
     if(user == null){

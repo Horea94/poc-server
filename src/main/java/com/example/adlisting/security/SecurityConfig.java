@@ -1,10 +1,8 @@
 package com.example.adlisting.security;
 
-import com.example.adlisting.security.auth.MySimpleUrlAuthenticationSuccessHandler;
+import com.example.adlisting.security.auth.CustomAuthenticationProvider;
+import com.example.adlisting.security.filter.JwtAuthFilter;
 import com.example.adlisting.security.service.UserDetailsServiceImpl;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,40 +12,31 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-
-import java.io.IOException;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
-
+  final JwtAuthFilter jwtAuthFilter;
   final UserDetailsServiceImpl userDetailsService;
+  final CustomAuthenticationProvider authenticationProvider;
 
-  public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+  public SecurityConfig(JwtAuthFilter jwtAuthFilter, UserDetailsServiceImpl userDetailsService, CustomAuthenticationProvider authenticationProvider) {
+    this.jwtAuthFilter = jwtAuthFilter;
     this.userDetailsService = userDetailsService;
+    this.authenticationProvider = authenticationProvider;
   }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(authReg -> authReg.requestMatchers("/v1/login").permitAll().anyRequest().authenticated())
-        .formLogin(loginConfigurer -> loginConfigurer.successHandler(successHandler()))
-        .logout(logoutConfigurer -> logoutConfigurer.deleteCookies("JSESSIONID"))
-        .rememberMe(remember -> remember.key("uniqueAndSecret").tokenValiditySeconds(86400))
-        .sessionManagement(configurer -> configurer.sessionFixation().
-            migrateSession().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED).
-            maximumSessions(2));
+        .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authenticationProvider(authenticationProvider)
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();
-
-  }
-
-  private AuthenticationSuccessHandler successHandler() {
-    return new MySimpleUrlAuthenticationSuccessHandler();
   }
 
   @Bean

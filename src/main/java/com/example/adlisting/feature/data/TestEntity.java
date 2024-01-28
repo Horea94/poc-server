@@ -12,8 +12,8 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class TestEntity implements Serializable {
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private long id;
+  @GeneratedValue(strategy = GenerationType.UUID)
+  private String id;
   @Column
   private String name;
   @Column
