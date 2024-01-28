@@ -23,10 +23,15 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.apache.logging.log4j:log4j-api:2.22.1")
-    implementation("org.apache.logging.log4j:log4j-core:2.22.1")
+    implementation("org.apache.logging.log4j:log4j-api")
+    implementation("org.apache.logging.log4j:log4j-core")
+    implementation("io.jsonwebtoken:jjwt-api:0.12.3")
+    implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
+    implementation("com.auth0:java-jwt:4.3.0")
 
     compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

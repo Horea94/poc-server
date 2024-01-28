@@ -1,4 +1,4 @@
-package com.example.adlisting.websocket;
+package com.example.adlisting.feature.websocket;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

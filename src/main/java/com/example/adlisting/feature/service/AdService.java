@@ -1,7 +1,7 @@
-package com.example.adlisting.service;
+package com.example.adlisting.feature.service;
 
-import com.example.adlisting.data.TestEntity;
-import com.example.adlisting.repository.AdRepository;
+import com.example.adlisting.feature.data.TestEntity;
+import com.example.adlisting.feature.repository.AdRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.example.adlisting.websocket;
+package com.example.adlisting.feature.websocket;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

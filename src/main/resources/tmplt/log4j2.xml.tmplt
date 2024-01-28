@@ -25,7 +25,7 @@
         <Logger name="com.example.adlisting.AdListingApplication" level="debug">
             <AppenderRef ref="RollingName"/>
         </Logger>
-        <Logger name="com.example.adlisting.controller.AdController" level="debug">
+        <Logger name="com.example.adlisting.feature.controller.AdController" level="debug">
             <AppenderRef ref="RollingName"/>
         </Logger>
 

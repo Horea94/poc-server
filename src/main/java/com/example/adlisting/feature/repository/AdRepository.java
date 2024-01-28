@@ -1,6 +1,6 @@
-package com.example.adlisting.repository;
+package com.example.adlisting.feature.repository;
 
-import com.example.adlisting.data.TestEntity;
+import com.example.adlisting.feature.data.TestEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface AdRepository extends JpaRepository<TestEntity, Long> {
