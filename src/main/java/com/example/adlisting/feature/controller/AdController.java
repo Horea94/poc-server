@@ -1,5 +1,6 @@
 package com.example.adlisting.feature.controller;
 
+import com.example.adlisting.base.BaseController;
 import com.example.adlisting.feature.data.TestEntity;
 import com.example.adlisting.feature.service.AdService;
 import com.example.adlisting.feature.websocket.WebsocketConnection;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class AdController {
+public class AdController extends BaseController {
   private static final Logger log = LogManager.getLogger(AdController.class);
   private final AdService adService;
   private final WebsocketConnection websocketConnection;
@@ -40,7 +41,7 @@ public class AdController {
 
   @GetMapping("/v1/test/{id}")
   public TestEntity getTestById(@PathVariable String id) {
-    log.info("get by id: " + id);
+    log.info("user: " + getUsernameFromContext() + " executes get by id: " + id);
     return adService.getTestEntityById(id);
   }
 }

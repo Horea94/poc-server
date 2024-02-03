@@ -1,6 +1,8 @@
 package com.example.adlisting.security.filter;
 
 import com.example.adlisting.security.SecurityConstants;
+import com.example.adlisting.security.data.CustomUserDetails;
+import com.example.adlisting.security.data.UserInfo;
 import com.example.adlisting.security.service.JwtService;
 import com.example.adlisting.security.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Date;
 
 @Component
@@ -45,20 +48,25 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             break;
           } catch (Exception e) {
             logger.info(e.getMessage());
-            username = null;
           }
         }
       }
     }
 
+    UserInfo anon = UserInfo.builder().username("anon").build();
     if(username != null && SecurityContextHolder.getContext().getAuthentication() == null){
       UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(username);
       if(jwtService.validateToken(token, userDetails)){
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
         authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+      } else {
+        UserDetails userDetails1 = new CustomUserDetails(anon);
+        SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails1, null, userDetails1.getAuthorities()));
       }
-
+    } else {
+      UserDetails userDetails1 = new CustomUserDetails(anon);
+      SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(userDetails1, null, userDetails1.getAuthorities()));
     }
 
     filterChain.doFilter(request, response);

@@ -1,5 +1,6 @@
 package com.example.adlisting.feature.service;
 
+import com.example.adlisting.feature.data.Status;
 import com.example.adlisting.feature.data.TestEntity;
 import com.example.adlisting.feature.repository.AdRepository;
 import org.apache.logging.log4j.LogManager;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.UUID;
 
 @Service
 public class AdService {
@@ -49,8 +51,8 @@ public class AdService {
     Random r = new Random();
     for (int i = 0; i < 10; i++) {
       String name = "base_" + i;
-      float f = r.nextFloat() * 100;
-      this.adRepository.save(new TestEntity("", name, f));
+      TestEntity e = TestEntity.builder().name(name).status(Status.ENABLED).build();
+      this.adRepository.save(e);
     }
   }
 }

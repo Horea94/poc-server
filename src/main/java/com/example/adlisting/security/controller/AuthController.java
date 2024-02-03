@@ -1,5 +1,6 @@
 package com.example.adlisting.security.controller;
 
+import com.example.adlisting.base.BaseController;
 import com.example.adlisting.security.SecurityConstants;
 import com.example.adlisting.security.auth.CustomAuthenticationProvider;
 import com.example.adlisting.security.data.AuthRequestDTO;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class AuthController {
+public class AuthController extends BaseController {
   private static final Logger log = LogManager.getLogger(AuthController.class);
   private final JwtService jwtService;
   private final CustomAuthenticationProvider authenticationProvider;

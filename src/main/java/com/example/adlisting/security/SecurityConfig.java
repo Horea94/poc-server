@@ -32,7 +32,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
-        .authorizeHttpRequests(authReg -> authReg.requestMatchers("/v1/login").permitAll().anyRequest().authenticated())
+        .authorizeHttpRequests(authReg -> authReg.anyRequest().permitAll())
         .sessionManagement(configurer -> configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);

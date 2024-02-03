@@ -1,23 +1,18 @@
 package com.example.adlisting.security.data;
 
+import com.example.adlisting.feature.data.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Entity
-@Data
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "roles")
-public class UserRole {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private long id;
+@Getter
+@Setter
+@EqualsAndHashCode(callSuper = true)
+@SuperBuilder
+@NoArgsConstructor
+public class UserRole extends BaseEntity {
   @Column
   private String name;
-
 }
