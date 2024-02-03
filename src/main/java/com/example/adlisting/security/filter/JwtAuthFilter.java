@@ -39,17 +39,28 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     String token = null;
     String username = null;
     Cookie[] cookies = request.getCookies();
+    String authHeader = request.getHeader(SecurityConstants.AUTH_HEADER);
     if(cookies != null) {
       for(Cookie c : cookies) {
         if(c.getName().equals(SecurityConstants.MY_COOKIE)) {
           token = c.getValue();
-          try {
-            username = jwtService.extractUsername(token);
-            break;
-          } catch (Exception e) {
-            logger.info(e.getMessage());
-          }
+          break;
         }
+      }
+    } else if (authHeader != null) {
+      // TODO: in case of auth header, send only the token
+      // Then remove the split
+      String[] split = authHeader.split("=");
+      if(split.length == 2) {
+        token = split[1];
+      }
+    }
+
+    if(token != null) {
+      try {
+        username = jwtService.extractUsername(token);
+      } catch (Exception e) {
+        logger.info(e.getMessage());
       }
     }
 

@@ -6,15 +6,13 @@ import com.example.adlisting.feature.service.AdService;
 import com.example.adlisting.feature.websocket.WebsocketConnection;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
+@CrossOrigin
 public class AdController extends BaseController {
   private static final Logger log = LogManager.getLogger(AdController.class);
   private final AdService adService;
@@ -25,14 +23,19 @@ public class AdController extends BaseController {
     this.websocketConnection = websocketConnection;
   }
 
-  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+//  @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
   @GetMapping("/v1/tests")
   public List<TestEntity> getTests() {
     log.info("get all entities");
-    return adService.getAllTestEntities();
+
+    List<TestEntity> allTestEntities = adService.getAllTestEntities();
+    if("anon".equals(getUsernameFromContext())) {
+      allTestEntities = allTestEntities.stream().filter(e -> e.getName().matches("^.*[02468]$")).collect(Collectors.toList());
+    }
+    return allTestEntities;
   }
 
-  @PreAuthorize("hasAnyRole('ADMIN')")
+//  @PreAuthorize("hasAnyRole('ADMIN')")
   @PutMapping("/v1/dummy_tests")
   public void insertDummyTests() {
     log.info("add dummy data");

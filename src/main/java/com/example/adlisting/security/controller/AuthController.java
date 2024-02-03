@@ -34,8 +34,11 @@ public class AuthController extends BaseController {
     if(authentication.isAuthenticated()){
       String token = jwtService.GenerateToken(authRequestDTO.getUsername());
       Cookie c = new Cookie(SecurityConstants.MY_COOKIE, token);
-      c.setSecure(false);
+      c.setDomain("localhost");
       c.setHttpOnly(true);
+      c.setSecure(false);
+      c.setPath("/");
+      c.setMaxAge(60 * 60 * 24 * 7);
       res.addCookie(c);
     } else {
       throw new UsernameNotFoundException("invalid user request..!!");
