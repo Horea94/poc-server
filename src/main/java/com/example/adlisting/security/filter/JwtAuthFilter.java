@@ -61,6 +61,13 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         username = jwtService.extractUsername(token);
       } catch (Exception e) {
         logger.info(e.getMessage());
+        Cookie c = new Cookie(SecurityConstants.MY_COOKIE, null);
+        c.setDomain("localhost");
+        c.setHttpOnly(true);
+        c.setSecure(false);
+        c.setPath("/");
+        c.setMaxAge(0);
+        response.addCookie(c);
       }
     }
 
