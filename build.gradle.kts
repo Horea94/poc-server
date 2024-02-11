@@ -29,6 +29,7 @@ dependencies {
     implementation("io.jsonwebtoken:jjwt-impl:0.12.3")
     implementation("io.jsonwebtoken:jjwt-jackson:0.12.3")
     implementation("com.auth0:java-jwt:4.3.0")
+    implementation("org.apache.commons:commons-fileupload2-jakarta:2.0.0-M1")
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
