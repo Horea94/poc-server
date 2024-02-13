@@ -12,9 +12,11 @@ import org.springframework.stereotype.Component;
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {
   private final UserDetailsServiceImpl userDetailsService;
+  private final SimplePasswordEncoderDelegator passwordEncoder;
 
-  public CustomAuthenticationProvider(UserDetailsServiceImpl userDetailsService) {
+  public CustomAuthenticationProvider(UserDetailsServiceImpl userDetailsService, SimplePasswordEncoderDelegator passwordEncoder) {
     this.userDetailsService = userDetailsService;
+    this.passwordEncoder = passwordEncoder;
   }
 
   @Override
@@ -25,11 +27,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     if (userDetails == null) {
       throw new UsernameNotFoundException("User not found");
     }
-    if (!password.equals(userDetails.getPassword())) {
+    if (!passwordEncoder.matches(password, userDetails.getPassword())) {
       throw new AuthenticationException("Invalid credentials") { };
     }
     Authentication authenticated = new UsernamePasswordAuthenticationToken(
-        userDetails, password, userDetails.getAuthorities());
+        userDetails, passwordEncoder.encode(password), userDetails.getAuthorities());
     return authenticated;
   }
 

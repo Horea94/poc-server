@@ -27,6 +27,6 @@ public class AlbumService {
     String templateName = "";
     if(albumTemplate != null)
       templateName = albumTemplate.getName();
-    return new AlbumDTO(album.getId(), album.getName(), templateName);
+    return new AlbumDTO(save.getId(), save.getName(), templateName);
   }
 }
