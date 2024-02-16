@@ -57,12 +57,17 @@ public class FileService {
         String extension = split[split.length - 1];
         ImageResource imageResource = imageResourceRepository.save(ImageResource.builder().album(album).extension(extension).status(Status.ENABLED).build());
         InputStream inputStream = item.getInputStream();
-        ImageUtil.saveImage(imageResource, inputStream);
-        ImageUtil.saveResizedCopiesOfImage(imageResource, ResizeType.getAllWidthTypes());
-        imageResourceRepository.save(imageResource);
+        long size = ImageUtil.saveImage(imageResource, inputStream);
+        if(size > 0) {
+          imageResource.setOriginalImageSize(size);
+          ImageUtil.saveResizedCopiesOfImage(imageResource, ResizeType.getAllWidthTypes());
+          imageResourceRepository.save(imageResource);
+        } else {
+          log.info(String.format("File size on disk is %d bytes!", size));
+        }
       }
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error("Unable to save image to disk: " + e);
     }
   }
 

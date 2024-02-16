@@ -20,7 +20,7 @@ public class ImageResource extends BaseEntity {
   @Column
   private int fileSizesFlags;
   @Column
-  private int originalImageSize; //bytes
+  private long originalImageSize; //bytes
   @JsonIgnore
   @ManyToOne
   @JoinColumn(name="album_id", nullable=false)
